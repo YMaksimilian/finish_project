@@ -14,7 +14,8 @@ result = service.users().messages().list(userId='me', q="subject: ЧЕК filenam
 messages = result.get('messages', []) # получаем список словарей, по которому будет итерироваться [{"id": "17c8e5f84e", "threadId": "17c8e5d1b3"},...]
 # print(messages)
 
-s_dir = os.getcwd() # фиксируем адрес рабочей директории
+s_dir = os.getcwd() # фиксируем адрес из которого был осуществлен запуск кода и сохраняем ее в переменную s_dir
+pdf_file_path = os.path.join(s_dir, "bills") # делаем join для получения адреса папки "bills"
 
 for message in messages:
     msg_in = service.users().messages().get(userId='me', id=message['id']).execute() # Снова запрос в АПИ, чтобы достать из отобранных писем
@@ -32,7 +33,7 @@ for message in messages:
             data = attachment['data']
             file_data = base64.urlsafe_b64decode(data.encode('UTF-8')) # декодинг
 
-            file_path = os.path.join(s_dir, filename) # собираем путь к сохраняемому файлу
+            file_path = os.path.join(pdf_file_path, filename) # собираем путь к сохраняемым файлам
             with open(file_path, 'wb') as f:
                 f.write(file_data)
                 print(f'Загружен: {file_path}')

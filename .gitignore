@@ -1,3 +1,7 @@
+db.py
 token.json
 my_cred_file.json
 env/
+.DS_Store
+bills/
+__pychache__/
